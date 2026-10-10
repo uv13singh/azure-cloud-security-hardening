@@ -1,0 +1,61 @@
+{
+  "account": "stcloudlab13uvsingh",
+  "resource_group": "rg-cloud-security-lab",
+  "timestamp_utc": "2026-10-10T06:39:09.186809+00:00",
+  "configuration": {
+    "allowBlobPublicAccess": false,
+    "allowSharedKeyAccess": false,
+    "httpsOnly": true,
+    "location": "northcentralus",
+    "minimumTlsVersion": "TLS1_2",
+    "name": "stcloudlab13uvsingh",
+    "publicNetworkAccess": "Disabled"
+  },
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  },
+  "findings": [
+    {
+      "check": "Public network access disabled",
+      "status": "PASS",
+      "severity": "None",
+      "actual_value": "Disabled",
+      "expected_value": "Disabled",
+      "remediation": "Restrict public network access. Confirm required access paths before changing networking."
+    },
+    {
+      "check": "Anonymous Blob access disabled",
+      "status": "PASS",
+      "severity": "None",
+      "actual_value": false,
+      "expected_value": false,
+      "remediation": "Disable anonymous Blob access at the storage account level."
+    },
+    {
+      "check": "Minimum TLS version is 1.2",
+      "status": "PASS",
+      "severity": "None",
+      "actual_value": "TLS1_2",
+      "expected_value": "TLS1_2",
+      "remediation": "Set the minimum TLS version to TLS 1.2 or higher."
+    },
+    {
+      "check": "Secure transfer required",
+      "status": "PASS",
+      "severity": "None",
+      "actual_value": true,
+      "expected_value": true,
+      "remediation": "Enable secure transfer to require encrypted HTTPS connections."
+    },
+    {
+      "check": "Storage account key access disabled",
+      "status": "PASS",
+      "severity": "None",
+      "actual_value": false,
+      "expected_value": false,
+      "remediation": "Prefer Microsoft Entra ID authorization. Confirm workloads do not depend on Shared Key before disabling it."
+    }
+  ]
+}
