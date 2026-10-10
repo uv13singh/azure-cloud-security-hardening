@@ -1,0 +1,2 @@
+resource_group_name  = "rg-cloud-security-lab"
+storage_account_name = "replacewithuniquename123"

@@ -1,8 +1,8 @@
-
 import json
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
+from storage_checks import evaluate_configuration
 
 ACCOUNT = "stcloudlab13uvsingh"
 RESOURCE_GROUP = "rg-cloud-security-lab"
@@ -80,20 +80,7 @@ def main():
         print("Check that Azure CLI is installed, you are signed in, and the correct subscription is active.")
         raise SystemExit(1)
 
-    findings = []
-
-    for check in CHECKS:
-        actual = config.get(check["key"])
-        passed = actual == check["expected"]
-
-        findings.append({
-            "check": check["name"],
-            "status": "PASS" if passed else "FAIL",
-            "severity": "None" if passed else check["severity"],
-            "actual_value": actual,
-            "expected_value": check["expected"],
-            "remediation": check["remediation"]
-        })
+    findings = evaluate_configuration(config)
 
     passed_count = sum(item["status"] == "PASS" for item in findings)
     failed_count = len(findings) - passed_count
