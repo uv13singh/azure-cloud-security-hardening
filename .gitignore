@@ -3,3 +3,7 @@ __pycache__/
 *.py[cod]
 .env
 .azure/
+
+# Raw Azure identity and access reports
+reports/iam_audit.json
+reports/iam_role_assignments.json
