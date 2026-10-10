@@ -1,0 +1,51 @@
+{
+  "account": "stcloudlab13uvsingh",
+  "resource_group": "rg-cloud-security-lab",
+  "timestamp_utc": "2026-10-10T06:23:22.200833+00:00",
+  "configuration": {
+    "allowBlobPublicAccess": false,
+    "allowSharedKeyAccess": false,
+    "httpsOnly": true,
+    "location": "northcentralus",
+    "minimumTlsVersion": "TLS1_2",
+    "name": "stcloudlab13uvsingh",
+    "publicNetworkAccess": "Disabled"
+  },
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  },
+  "findings": [
+    {
+      "check": "Public network access disabled",
+      "status": "PASS",
+      "severity": "None",
+      "details": "Current value: Disabled"
+    },
+    {
+      "check": "Anonymous Blob access disabled",
+      "status": "PASS",
+      "severity": "None",
+      "details": "Current value: False"
+    },
+    {
+      "check": "Minimum TLS version is 1.2 or higher",
+      "status": "PASS",
+      "severity": "None",
+      "details": "Current value: TLS1_2"
+    },
+    {
+      "check": "Secure transfer required",
+      "status": "PASS",
+      "severity": "None",
+      "details": "Current value: True"
+    },
+    {
+      "check": "Storage account key access disabled",
+      "status": "PASS",
+      "severity": "None",
+      "details": "Current value: False"
+    }
+  ]
+}
