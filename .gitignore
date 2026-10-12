@@ -7,8 +7,7 @@ __pycache__/
 # Raw Azure identity and access reports
 reports/iam_audit.json
 reports/iam_role_assignments.json
-
-# Nested audit reports
+reports/activity_log_audit.json
 scripts/reports/iam_audit.json
 scripts/reports/iam_role_assignments.json
 
@@ -17,8 +16,11 @@ scripts/reports/iam_role_assignments.json
 \#*#
 .#*
 
-# Terraform local state and provider cache
+# Terraform local state, plans, cache, and metadata
 terraform/.terraform/
 terraform/terraform.tfstate
 terraform/terraform.tfstate.*
+terraform/terraform.tfplan
+terraform/refresh.tfplan
 terraform/crash.log
+terraform/.terraform.tfstate.lock.info

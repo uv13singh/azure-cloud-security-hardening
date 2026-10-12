@@ -22,12 +22,23 @@ The goal is to make security controls repeatable, testable, and easier to audit.
 Terraform defines a separate storage account in the existing lab resource group.
 
 - Resource group: `rg-cloud-security-lab`
-- Region: inherited from the existing resource group
+- Region: 'northcentralus'
 - Performance tier: Standard
 - Redundancy: Locally redundant storage (LRS)
 - Network access: Public network access disabled
 
-The Terraform configuration is a proposed baseline. It has been validated locally but has not been deployed.
+The Terraform baseline has been deployed to Azure and verified against
+the live storage account. A subsequent Terraform plan reported no changes.
+
+Verified controls include TLS 1.2, HTTPS-only traffic, disabled anonymous
+Blob access, disabled Shared Key access, disabled public network access,
+Microsoft Entra ID as the default portal authorization method, and
+disabled local-user authentication.
+
+The initial deployment encountered a data-plane authentication error
+because Shared Key access was disabled. The resource was reconciled with
+Terraform state, and the final plan reported no changes without weakening
+the security settings.
 
 ## Validation
 

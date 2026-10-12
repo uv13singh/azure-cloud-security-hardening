@@ -1,0 +1,99 @@
+{
+  "title": "Simulated Storage Security Remediation",
+  "scope": "Local simulation; no Azure settings were changed.",
+  "before_remediation": {
+    "passed": 0,
+    "failed": 5,
+    "total": 5,
+    "findings": [
+      {
+        "check": "Public network access disabled",
+        "status": "FAIL",
+        "severity": "High",
+        "actual_value": "Enabled",
+        "expected_value": "Disabled",
+        "remediation": "Restrict public network access and verify required access paths."
+      },
+      {
+        "check": "Anonymous Blob access disabled",
+        "status": "FAIL",
+        "severity": "High",
+        "actual_value": true,
+        "expected_value": false,
+        "remediation": "Disable anonymous Blob access at the account level."
+      },
+      {
+        "check": "Minimum TLS version is 1.2",
+        "status": "FAIL",
+        "severity": "Medium",
+        "actual_value": "TLS1_0",
+        "expected_value": "TLS1_2",
+        "remediation": "Set the minimum TLS version to TLS 1.2 or higher."
+      },
+      {
+        "check": "Secure transfer required",
+        "status": "FAIL",
+        "severity": "High",
+        "actual_value": false,
+        "expected_value": true,
+        "remediation": "Require secure transfer for storage requests."
+      },
+      {
+        "check": "Storage account key access disabled",
+        "status": "FAIL",
+        "severity": "Medium",
+        "actual_value": true,
+        "expected_value": false,
+        "remediation": "Prefer Microsoft Entra authorization after checking workload compatibility."
+      }
+    ]
+  },
+  "after_remediation": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "findings": [
+      {
+        "check": "Public network access disabled",
+        "status": "PASS",
+        "severity": "None",
+        "actual_value": "Disabled",
+        "expected_value": "Disabled",
+        "remediation": "Restrict public network access and verify required access paths."
+      },
+      {
+        "check": "Anonymous Blob access disabled",
+        "status": "PASS",
+        "severity": "None",
+        "actual_value": false,
+        "expected_value": false,
+        "remediation": "Disable anonymous Blob access at the account level."
+      },
+      {
+        "check": "Minimum TLS version is 1.2",
+        "status": "PASS",
+        "severity": "None",
+        "actual_value": "TLS1_2",
+        "expected_value": "TLS1_2",
+        "remediation": "Set the minimum TLS version to TLS 1.2 or higher."
+      },
+      {
+        "check": "Secure transfer required",
+        "status": "PASS",
+        "severity": "None",
+        "actual_value": true,
+        "expected_value": true,
+        "remediation": "Require secure transfer for storage requests."
+      },
+      {
+        "check": "Storage account key access disabled",
+        "status": "PASS",
+        "severity": "None",
+        "actual_value": false,
+        "expected_value": false,
+        "remediation": "Prefer Microsoft Entra authorization after checking workload compatibility."
+      }
+    ]
+  },
+  "failed_checks_resolved": 5
+}

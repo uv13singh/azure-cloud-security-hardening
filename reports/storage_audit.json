@@ -1,14 +1,14 @@
 {
-  "account": "stcloudlab13uvsingh",
-  "resource_group": "rg-cloud-security-lab",
-  "timestamp_utc": "2026-10-10T06:23:22.200833+00:00",
+  "account": "storage-account-anonymous",
+  "resource_group": "resource-group-anonymous",
+  "timestamp_utc": "2026-10-12T01:28:08.104822+00:00",
   "configuration": {
     "allowBlobPublicAccess": false,
     "allowSharedKeyAccess": false,
     "httpsOnly": true,
     "location": "northcentralus",
     "minimumTlsVersion": "TLS1_2",
-    "name": "stcloudlab13uvsingh",
+    "name": "storage-account-anonymous",
     "publicNetworkAccess": "Disabled"
   },
   "summary": {
@@ -21,31 +21,41 @@
       "check": "Public network access disabled",
       "status": "PASS",
       "severity": "None",
-      "details": "Current value: Disabled"
+      "actual_value": "Disabled",
+      "expected_value": "Disabled",
+      "remediation": "Restrict public network access and verify required access paths."
     },
     {
       "check": "Anonymous Blob access disabled",
       "status": "PASS",
       "severity": "None",
-      "details": "Current value: False"
+      "actual_value": false,
+      "expected_value": false,
+      "remediation": "Disable anonymous Blob access at the account level."
     },
     {
-      "check": "Minimum TLS version is 1.2 or higher",
+      "check": "Minimum TLS version is 1.2",
       "status": "PASS",
       "severity": "None",
-      "details": "Current value: TLS1_2"
+      "actual_value": "TLS1_2",
+      "expected_value": "TLS1_2",
+      "remediation": "Set the minimum TLS version to TLS 1.2 or higher."
     },
     {
       "check": "Secure transfer required",
       "status": "PASS",
       "severity": "None",
-      "details": "Current value: True"
+      "actual_value": true,
+      "expected_value": true,
+      "remediation": "Require secure transfer for storage requests."
     },
     {
       "check": "Storage account key access disabled",
       "status": "PASS",
       "severity": "None",
-      "details": "Current value: False"
+      "actual_value": false,
+      "expected_value": false,
+      "remediation": "Prefer Microsoft Entra authorization after checking workload compatibility."
     }
   ]
 }
