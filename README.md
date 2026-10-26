@@ -107,6 +107,3 @@ The audit scripts require an appropriate Azure login and permissions. The remedi
 - Add policy-compliance checks and more detailed IAM analysis.
 - Add a sanitized example report and screenshots of verified Azure settings.
 - Integrate checks into a CI workflow.
-
-## Disclaimer
-This project is an educational cloud security lab. Review configurations, access requirements, and potential costs before deploying resources in a real Azure environment.
