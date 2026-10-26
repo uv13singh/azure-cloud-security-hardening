@@ -1,9 +1,9 @@
 # Azure Storage Security Audit
 
-- **Account:** `storage-account-anonymous`
-- **Resource group:** `resource-group-anonymous`
-- **Location:** `northcentralus`
-- **Audit time (UTC):** 2026-10-12T01:28:08.104822+00:00
+- Account: `storage-account-anonymous`
+- Resource group: `resource-group-anonymous`
+- Location: `northcentralus`
+- Audit time (UTC): 2026-10-12T01:28:08.104822+00:00
 
 ## Summary
 
