@@ -27,8 +27,9 @@ Terraform defines a separate storage account in the existing lab resource group.
 - Redundancy: Locally redundant storage (LRS)
 - Network access: Public network access disabled
 
-The Terraform baseline has been deployed to Azure and verified against
-the live storage account. A subsequent Terraform plan reported no changes.
+The Terraform baseline was deployed to Azure and verified against the
+Terraform-managed storage account. A subsequent Terraform plan reported no
+changes.
 
 Verified controls include TLS 1.2, HTTPS-only traffic, disabled anonymous
 Blob access, disabled Shared Key access, disabled public network access,
@@ -73,13 +74,11 @@ The remediation simulation does not change live Azure resources.
 
 ## Current Limitations
 
-- Terraform deployment has not yet been performed.
-- The Terraform baseline has not yet been verified against a deployed Terraform-managed resource.
 - Security findings should be interpreted in the context of the lab's scope and permissions.
 
 ## Future Improvements
 
-- Review a Terraform plan before deployment.
+- Review a Terraform plan before future infrastructure changes.
 - Add automated tests for security-control evaluation.
 - Capture sanitized before-and-after remediation evidence.
 - Document setup, execution, and cleanup procedures.

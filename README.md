@@ -73,8 +73,14 @@ PYTHONPATH=scripts python -m unittest discover -s scripts -p "test_*.py" -v
 Run the storage audit:
 
 ```bash
+export AZURE_STORAGE_ACCOUNT="<storage-account-name>"
+export AZURE_RESOURCE_GROUP="<resource-group-name>"
 python scripts/storage_audit.py
 ```
+
+The storage audit reads the account and resource group from these environment
+variables. Its generated reports redact both identifiers and include only the
+location and checked security settings.
 
 Run the remediation demonstration:
 
@@ -92,7 +98,7 @@ The audit scripts require an appropriate Azure login and permissions. The remedi
 
 ## Limitations
 - IAM findings are flagged for human review and are not automatically confirmed vulnerabilities.
-- Activity Log classification uses keywords and can produce false positives or miss relevant events.
+- Activity Log review is limited to the first 100 returned events. Keyword classification can produce false positives or miss relevant events.
 - Disabling public network access may affect workloads that require network access; access paths should be planned before deployment.
 - Defender for Storage was not enabled as part of this lab.
 

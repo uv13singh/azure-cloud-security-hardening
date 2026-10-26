@@ -4,6 +4,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 import subprocess
 
+MAX_EVENTS = 100
+
 def run_az(args):
     result = subprocess.run(
         ["az"] + args + ["--output", "json"],
@@ -37,7 +39,7 @@ def main():
         "monitor", "activity-log", "list",
         "--resource-group", args.resource_group,
         "--offset", f"{args.days}d",
-        "--max-events", "100",
+        "--max-events", str(MAX_EVENTS),
         "--output", "json",
     ])
 
@@ -77,10 +79,13 @@ def main():
         "lookbackDays": args.days,
         "eventsRetrieved": len(events),
         "securityRelevantEvents": len(reviewed),
+        "eventLimit": MAX_EVENTS,
+        "mayBeTruncated": len(events) == MAX_EVENTS,
         "events": reviewed,
         "note": (
-            "Keyword-based triage only; this is not a complete threat "
-            "detection system. Validate events and identities in Azure."
+            f"At most {MAX_EVENTS} events are collected. Results may be "
+            "truncated. Keyword-based triage is not a complete threat "
+            "detection system; validate events and identities in Azure."
         ),
     }
 

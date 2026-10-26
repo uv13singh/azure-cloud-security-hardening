@@ -1,5 +1,6 @@
 
 import unittest
+from storage_audit import build_report
 from storage_checks import evaluate_configuration
 
 
@@ -76,6 +77,23 @@ class StorageAuditTests(unittest.TestCase):
         failed = [item for item in findings if item["status"] == "FAIL"]
 
         self.assertEqual(len(failed), 3)
+
+    def test_report_omits_resource_identifiers(self):
+        config = {
+            **self.secure_config,
+            "name": "private-storage-account-name",
+            "location": "northcentralus",
+            "resourceGroup": "private-resource-group-name",
+        }
+        findings = evaluate_configuration(config)
+        report = build_report(config, findings, timestamp="fixed-time")
+
+        self.assertEqual(report["account"], "REDACTED")
+        self.assertEqual(report["resource_group"], "REDACTED")
+        self.assertNotIn("name", report["configuration"])
+        self.assertNotIn("resourceGroup", report["configuration"])
+        self.assertNotIn("private-storage-account-name", str(report))
+        self.assertNotIn("private-resource-group-name", str(report))
 
 
 if __name__ == "__main__":

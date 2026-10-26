@@ -1,54 +1,17 @@
 import json
+import os
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
-from storage_checks import evaluate_configuration
+from storage_checks import CHECKS, evaluate_configuration
 
-ACCOUNT = "stcloudlab13uvsingh"
-RESOURCE_GROUP = "rg-cloud-security-lab"
-
-CHECKS = [
-    {
-        "key": "publicNetworkAccess",
-        "name": "Public network access disabled",
-        "expected": "Disabled",
-        "severity": "High",
-        "remediation": "Restrict public network access. Confirm required access paths before changing networking."
-    },
-    {
-        "key": "allowBlobPublicAccess",
-        "name": "Anonymous Blob access disabled",
-        "expected": False,
-        "severity": "High",
-        "remediation": "Disable anonymous Blob access at the storage account level."
-    },
-    {
-        "key": "minimumTlsVersion",
-        "name": "Minimum TLS version is 1.2",
-        "expected": "TLS1_2",
-        "severity": "Medium",
-        "remediation": "Set the minimum TLS version to TLS 1.2 or higher."
-    },
-    {
-        "key": "httpsOnly",
-        "name": "Secure transfer required",
-        "expected": True,
-        "severity": "High",
-        "remediation": "Enable secure transfer to require encrypted HTTPS connections."
-    },
-    {
-        "key": "allowSharedKeyAccess",
-        "name": "Storage account key access disabled",
-        "expected": False,
-        "severity": "Medium",
-        "remediation": "Prefer Microsoft Entra ID authorization. Confirm workloads do not depend on Shared Key before disabling it."
-    },
-]
+ACCOUNT_ENV = "AZURE_STORAGE_ACCOUNT"
+RESOURCE_GROUP_ENV = "AZURE_RESOURCE_GROUP"
 
 
-def get_configuration():
+def get_configuration(account, resource_group):
     query = (
-        "{name:name,location:location,"
+        "{location:location,"
         "publicNetworkAccess:publicNetworkAccess,"
         "allowBlobPublicAccess:allowBlobPublicAccess,"
         "minimumTlsVersion:minimumTlsVersion,"
@@ -58,8 +21,8 @@ def get_configuration():
 
     command = [
         "az", "storage", "account", "show",
-        "--name", ACCOUNT,
-        "--resource-group", RESOURCE_GROUP,
+        "--name", account,
+        "--resource-group", resource_group,
         "--query", query,
         "--output", "json"
     ]
@@ -72,31 +35,48 @@ def get_configuration():
     return json.loads(result.stdout)
 
 
+def build_report(config, findings, timestamp=None):
+    """Build a report that contains control results but no resource identity."""
+    safe_configuration = {"location": config.get("location")}
+    safe_configuration.update(
+        (check["key"], config.get(check["key"])) for check in CHECKS
+    )
+
+    passed_count = sum(item["status"] == "PASS" for item in findings)
+    return {
+        "account": "REDACTED",
+        "resource_group": "REDACTED",
+        "timestamp_utc": timestamp or datetime.now(timezone.utc).isoformat(),
+        "configuration": safe_configuration,
+        "summary": {
+            "passed": passed_count,
+            "failed": len(findings) - passed_count,
+            "total": len(findings),
+        },
+        "findings": findings,
+    }
+
+
 def main():
+    account = os.environ.get(ACCOUNT_ENV)
+    resource_group = os.environ.get(RESOURCE_GROUP_ENV)
+    if not account or not resource_group:
+        print(
+            f"Set {ACCOUNT_ENV} and {RESOURCE_GROUP_ENV} before running the audit."
+        )
+        raise SystemExit(1)
+
     try:
-        config = get_configuration()
-    except (RuntimeError, json.JSONDecodeError) as error:
+        config = get_configuration(account, resource_group)
+    except (FileNotFoundError, RuntimeError, json.JSONDecodeError) as error:
         print(f"Audit failed: {error}")
         print("Check that Azure CLI is installed, you are signed in, and the correct subscription is active.")
         raise SystemExit(1)
 
     findings = evaluate_configuration(config)
-
-    passed_count = sum(item["status"] == "PASS" for item in findings)
-    failed_count = len(findings) - passed_count
-
-    report = {
-        "account": ACCOUNT,
-        "resource_group": RESOURCE_GROUP,
-        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-        "configuration": config,
-        "summary": {
-            "passed": passed_count,
-            "failed": failed_count,
-            "total": len(findings)
-        },
-        "findings": findings
-    }
+    report = build_report(config, findings)
+    passed_count = report["summary"]["passed"]
+    failed_count = report["summary"]["failed"]
 
     output_dir = Path("reports")
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -109,9 +89,9 @@ def main():
     lines = [
         "# Azure Storage Security Audit",
         "",
-        f"- **Account:** `{ACCOUNT}`",
-        f"- **Resource group:** `{RESOURCE_GROUP}`",
-        f"- **Location:** `{config.get('location')}`",
+        "- **Account:** `REDACTED`",
+        "- **Resource group:** `REDACTED`",
+        f"- **Location:** `{report['configuration'].get('location')}`",
         f"- **Audit time (UTC):** {report['timestamp_utc']}",
         "",
         "## Summary",
